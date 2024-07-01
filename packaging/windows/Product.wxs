@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <Package Name="HWVAL Studio" Manufacturer="Soccentric" Version="$(var.Version)"
+           UpgradeCode="7B0D4C3A-5A9B-4D0E-9A2A-1F4C7E6D8B21" Scope="perMachine">
+    <MajorUpgrade DowngradeErrorMessage="A newer version of HWVAL Studio is already installed." />
+    <MediaTemplate EmbedCab="yes" />
+    <StandardDirectory Id="ProgramFiles64Folder">
+      <Directory Id="INSTALLDIR" Name="HWVAL Studio">
+        <Component Id="MainExecutable" Guid="*">
+          <File Id="HwvalStudioExe" Source="!(bindpath.payload)\hwval-studio.exe" KeyPath="yes" />
+        </Component>
+        <Component Id="StartMenuShortcut" Guid="*">
+          <Shortcut Id="StartMenu" Directory="ProgramMenuDir" Name="HWVAL Studio"
+                    Target="[INSTALLDIR]hwval-studio.exe" WorkingDirectory="INSTALLDIR" />
+          <RemoveFolder Id="ProgramMenuDir" On="uninstall" />
+          <RegistryValue Root="HKCU" Key="Software\Soccentric\HWVAL Studio" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+        </Component>
+      </Directory>
+    </StandardDirectory>
+    <StandardDirectory Id="ProgramMenuFolder">
+      <Directory Id="ProgramMenuDir" Name="HWVAL Studio" />
+    </StandardDirectory>
+    <Feature Id="ProductFeature" Title="HWVAL Studio" Level="1">
+      <ComponentRef Id="MainExecutable" />
+      <ComponentRef Id="StartMenuShortcut" />
+      <ComponentGroupRef Id="RuntimeFiles" />
+    </Feature>
+  </Package>
+
+  <!-- PyInstaller one-folder build: everything except the launcher lives in
+       _internal\ and must be installed next to it. -->
+  <Fragment>
+    <ComponentGroup Id="RuntimeFiles" Directory="INSTALLDIR">
+      <Files Include="!(bindpath.payload)\_internal\**" />
+    </ComponentGroup>
+  </Fragment>
+</Wix>

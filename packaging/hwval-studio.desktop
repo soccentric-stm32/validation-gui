@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=HWVAL Studio
+GenericName=Hardware Validation Studio
+Comment=Run HWVAL tests, update and flash STM32F767ZI firmware
+Exec=hwval-studio
+Icon=hwval-studio
+Terminal=false
+Categories=Development;Electronics;
+Keywords=STM32;HWVAL;OpenOCD;UART;SWD;validation;

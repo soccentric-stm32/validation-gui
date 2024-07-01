@@ -1,0 +1,24 @@
+# Line endings: always check out LF, on every OS.
+#
+# The release bundle hashes working-tree bytes (ci/package.py: sha256 of every
+# bundled file into manifest.json and SHA256SUMS), so a CRLF checkout on Windows
+# would produce different digests than the Linux/macOS CI jobs.  Forcing LF in
+# the working tree keeps the digests identical everywhere.
+* text=auto eol=lf
+
+# Assets that must never be converted.
+*.png binary
+*.ico binary
+*.icns binary
+*.ttf binary
+*.otf binary
+*.pdf binary
+
+# Archives and installers produced by the packaging scripts.
+*.gz binary
+*.zip binary
+*.tar binary
+*.deb binary
+*.msi binary
+*.dmg binary
+*.AppImage binary

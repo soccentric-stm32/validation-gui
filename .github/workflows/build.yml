@@ -1,0 +1,49 @@
+name: build
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+jobs:
+  package:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-14
+            arch: arm64
+            command: packaging/build-macos.sh
+          - os: macos-13
+            arch: x86_64
+            command: packaging/build-macos.sh
+          - os: windows-2022
+            arch: x64
+            command: powershell -File packaging/build-windows.ps1
+          - os: ubuntu-22.04
+            arch: x86_64
+            command: packaging/build-linux.sh
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --upgrade pip
+      - run: python -m pip install -e ".[packaging]"
+      - name: Regenerate the HWLINK bindings (when flatc is available)
+        shell: bash
+        run: |
+          if command -v flatc >/dev/null 2>&1; then
+            python scripts/gen_protocol.py --flatc flatc
+          else
+            echo "flatc not found; packaging the committed generated bindings"
+          fi
+      - name: Verify the generated protocol package
+        shell: bash
+        run: python -c "import hwval_studio.protocol.generated.hwlink"
+      - run: ${{ matrix.command }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hwval-studio-${{ matrix.os }}-${{ matrix.arch }}
+          path: dist/*

@@ -2,12 +2,21 @@
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd -P)"
 cd "$ROOT"
+# Prefer the project virtualenv when it exists; callers can override PYTHON.
+PYTHON="${PYTHON:-}"
+if [ -z "$PYTHON" ]; then
+  if [ -x "$ROOT/.venv/bin/python" ]; then
+    PYTHON="$ROOT/.venv/bin/python"
+  else
+    PYTHON=python3
+  fi
+fi
 export HWVAL_STUDIO_GIT_COMMIT="$(git rev-parse --short HEAD 2>/dev/null || true)"
 export HWVAL_STUDIO_BUILD_DATE="$(date -u +%F)"
-python scripts/make_icons.py
-pyinstaller packaging/hwval-studio.spec --noconfirm --clean
+"$PYTHON" scripts/make_icons.py
+"$PYTHON" -m PyInstaller packaging/hwval-studio.spec --noconfirm --clean
 APP="$ROOT/dist/hwval-studio"
-VERSION="$(python -c 'import hwval_studio; print(hwval_studio.__version__)')"
+VERSION="$("$PYTHON" -c 'import hwval_studio; print(hwval_studio.__version__)')"
 
 # .deb -----------------------------------------------------------------
 DEB="$ROOT/build/deb"

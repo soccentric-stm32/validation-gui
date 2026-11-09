@@ -32,8 +32,14 @@ icons:
 	$(VENV)/bin/python scripts/make_icons.py
 
 package:
-	@if [ "$$(uname -s)" = "Darwin" ]; then packaging/build-macos.sh; \
-	 elif [ "$$(uname -s)" = "Linux" ]; then packaging/build-linux.sh; \
+	@if ! "$(VENV)/bin/python" -c 'import PyInstaller' >/dev/null 2>&1; then \
+	  echo "Packaging dependencies are missing; running 'make install'."; \
+	  $(MAKE) install; \
+	fi
+	@if [ "$$(uname -s)" = "Darwin" ]; then \
+	   PYTHON="$(CURDIR)/$(VENV)/bin/python" packaging/build-macos.sh; \
+	 elif [ "$$(uname -s)" = "Linux" ]; then \
+	   PYTHON="$(CURDIR)/$(VENV)/bin/python" packaging/build-linux.sh; \
 	 else echo "On Windows run packaging\\build-windows.ps1"; exit 1; fi
 
 clean:

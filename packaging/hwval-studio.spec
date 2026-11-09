@@ -1,14 +1,23 @@
 # -*- mode: python ; coding: utf-8 -*-
+import os
+import sys
+
 from PyInstaller.utils.hooks import collect_data_files, collect_submodules
 
+# Relative paths in a PyInstaller spec are resolved against the spec file, not
+# the directory the build is started from. Derive the repository root from
+# SPECPATH so the build works from any working directory.
+ROOT = os.path.abspath(os.path.join(SPECPATH, os.pardir))
+sys.path.insert(0, os.path.join(ROOT, "src"))
+
 datas = collect_data_files("hwval_studio")
-datas += [("protocol/hwlink.fbs", "protocol")]
+datas += [(os.path.join(ROOT, "protocol", "hwlink.fbs"), "protocol")]
 hiddenimports = collect_submodules("hwval_studio.protocol.generated.hwlink")
 hiddenimports += ["flatbuffers", "serial", "serial.tools.list_ports"]
 
 a = Analysis(
-    ["src/hwval_studio/app.py"],
-    pathex=["src"],
+    [os.path.join(ROOT, "src", "hwval_studio", "app.py")],
+    pathex=[os.path.join(ROOT, "src")],
     binaries=[],
     datas=datas,
     hiddenimports=hiddenimports,
@@ -34,7 +43,9 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon="packaging/hwval-studio.ico" if __import__("os").path.exists("packaging/hwval-studio.ico") else None,
+    icon=os.path.join(ROOT, "packaging", "hwval-studio.ico")
+    if os.path.exists(os.path.join(ROOT, "packaging", "hwval-studio.ico"))
+    else None,
 )
 coll = COLLECT(
     exe,

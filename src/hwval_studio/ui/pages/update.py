@@ -169,7 +169,7 @@ class UpdatePage(ScrollPage):
         self.cancel_button.clicked.connect(self.cancel_requested.emit)
         controls.addWidget(self.cancel_button)
         self.update_button = QPushButton(icon("update", "#FFFFFF", 14), "Update Firmware")
-        self.update_button.setObjectName("Primary")
+        self.update_button.setObjectName("Accent")
         self.update_button.clicked.connect(self.request_update)
         controls.addWidget(self.update_button)
         self.progress_card.add_layout(controls)

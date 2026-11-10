@@ -11,7 +11,7 @@ from PySide6.QtWidgets import QToolTip, QTreeWidgetItem
 from hwval_studio.core.client import Identity
 from hwval_studio.protocol.generated.hwlink.Role import Role
 from hwval_studio.transport.port_lock import acquire_port, release_port
-from hwval_studio.ui.theme import COLORS, icon
+from hwval_studio.ui.theme import COLORS, icon, nav_icon
 
 CATEGORY_ICONS = {
     "CPU & System": "cpu",
@@ -88,7 +88,7 @@ class NavigationMixin:
         ) -> QTreeWidgetItem:
             item = QTreeWidgetItem([text])
             item.setData(0, Qt.ItemDataRole.UserRole, key)
-            item.setIcon(0, icon(icon_name, COLORS["text"], 17))
+            item.setIcon(0, nav_icon(icon_name, 17))
             item.setToolTip(0, tooltip)
             item.setSizeHint(0, QSize(0, 24))
             if parent is None:
@@ -214,7 +214,7 @@ class NavigationMixin:
             item.setText(0, group.name + mark)
             item.setForeground(0, QColor(color))
             icon_name = GROUP_ICONS.get(group.code, CATEGORY_ICONS.get(group.category, "chip"))
-            item.setIcon(0, icon(icon_name, color if mark else COLORS["text"], 17))
+            item.setIcon(0, icon(icon_name, color, 17) if mark else nav_icon(icon_name, 17))
         all_item = self._sidebar_items.get("all")
         if all_item is not None:
             mark = ""

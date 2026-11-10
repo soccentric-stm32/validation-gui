@@ -4,7 +4,7 @@ HWVAL Studio is a cross-platform PySide6 desktop application for macOS, Windows 
 
 ## Features
 
-- Native-looking PySide6 app for macOS, Windows and Linux
+- PySide6 app for macOS, Windows and Linux in the shared SoCcentric look (one design shared with the other SoCcentric desktop apps: Inter (system sans fallback), a 22/15/13/12/11 px type scale, accent `#007AFF` (`#0A84FF` in dark), 10 px cards with hairline borders, 32 px buttons, pill status labels and a solid-accent current item in the sidebar. Light and dark follow the system colour scheme. `src/hwval_studio/ui/soc_theme.py` is the shared theme file.)
 - ST-LINK virtual COM port discovery, role detection and auto-reconnect
 - Test catalogue read from the firmware with search, filters and details
 - Single, group, selected or full runs with levels and repeat/until-fail

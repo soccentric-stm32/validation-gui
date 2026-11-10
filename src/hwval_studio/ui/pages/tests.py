@@ -79,7 +79,7 @@ class TestsPage(Page):
 
         # Header controls -------------------------------------------------
         self.run_group_button = QPushButton(icon("play", "#FFFFFF", 14), "Run Group")
-        self.run_group_button.setObjectName("Primary")
+        self.run_group_button.setObjectName("Accent")
         self.run_group_button.clicked.connect(self.run_group)
         self.add_action(self.run_group_button)
         self.run_selected_button = QPushButton(icon("play", COLORS["accent"], 14), "Run Selected")

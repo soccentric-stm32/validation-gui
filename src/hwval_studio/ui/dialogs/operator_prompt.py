@@ -78,7 +78,7 @@ class OperatorPromptDialog(QDialog):
             label = answer.capitalize()
             button = QPushButton(label)
             if answer.lower() in {"yes", "ok", "pass", "confirm"}:
-                button.setObjectName("Primary")
+                button.setObjectName("Accent")
             if operator_mode:
                 button.setStyleSheet("font-size: 17px; padding: 12px 24px;")
             button.clicked.connect(lambda _checked=False, value=answer: self._answer(value))

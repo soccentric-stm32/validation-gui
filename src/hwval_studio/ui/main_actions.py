@@ -305,7 +305,7 @@ class ActionsMixin:
         self.port_combo.setToolTip("Serial port")
         toolbar.addWidget(self.port_combo)
         self.connect_button = QPushButton(icon("connect", COLORS["accent"], 15), "Connect")
-        self.connect_button.setObjectName("Primary")
+        self.connect_button.setObjectName("Accent")
         self.connect_button.clicked.connect(self._connect_clicked)
         toolbar.addWidget(self.connect_button)
         self.activity = ActivityView()

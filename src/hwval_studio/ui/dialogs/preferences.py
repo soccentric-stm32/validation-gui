@@ -57,7 +57,7 @@ class PreferencesDialog(QDialog):
         bottom.addWidget(note)
         bottom.addStretch(1)
         close = QPushButton("Close")
-        close.setObjectName("Primary")
+        close.setObjectName("Accent")
         close.clicked.connect(self.accept)
         bottom.addWidget(close)
         layout.addLayout(bottom)

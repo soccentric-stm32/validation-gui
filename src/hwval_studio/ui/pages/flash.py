@@ -87,7 +87,7 @@ class FlashPage(ScrollPage):
         choose.clicked.connect(self.choose_hwval)
         flash_row.addWidget(choose)
         self.flash_button = QPushButton(icon("flash", "#FFFFFF", 14), "Flash HWVAL")
-        self.flash_button.setObjectName("Primary")
+        self.flash_button.setObjectName("Accent")
         self.flash_button.clicked.connect(self.confirm_flash)
         flash_row.addWidget(self.flash_button)
         self.ops_card.add_layout(flash_row)

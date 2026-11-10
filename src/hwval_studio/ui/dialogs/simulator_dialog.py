@@ -47,7 +47,7 @@ class SimulatorDialog(QDialog):
         role_row.addWidget(self.role)
         role_row.addStretch(1)
         connect = QPushButton(icon("connect", COLORS["accent"], 14), "Connect In-Process Simulator")
-        connect.setObjectName("Primary")
+        connect.setObjectName("Accent")
         connect.clicked.connect(lambda: self.connect_requested.emit(f"simulator:{self.role.currentText()}"))
         role_row.addWidget(connect)
         layout.addLayout(role_row)

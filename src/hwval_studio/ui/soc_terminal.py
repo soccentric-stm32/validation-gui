@@ -383,7 +383,10 @@ class TerminalPanel(QFrame):
         self._sync()
 
     def hideEvent(self, event) -> None:
-        self._halt()
+        try:
+            self._halt()
+        except RuntimeError:  # child widgets already deleted at shutdown
+            pass
         super().hideEvent(event)
 
     # ---- reader slots ---------------------------------------------------

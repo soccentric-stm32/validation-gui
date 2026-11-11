@@ -78,9 +78,9 @@ class LogConsole(QWidget):
             f"background: {COLORS['surface_alt']}; border: none; border-top: 1px solid {COLORS['separator']};"
             "padding: 5px;"
         )
-        self.view.setMaximumHeight(220)
         layout.addWidget(self.view, 1)
-        self.setMinimumHeight(60)
+        self.setMinimumHeight(90)
+        self.setMaximumHeight(240)
 
     # -- configuration -------------------------------------------------
     def _set_level(self, level: str) -> None:

@@ -212,7 +212,10 @@ class MainWindow(ActionsMixin, NavigationMixin, HandlersMixin, CommandsMixin, QM
         self.main_splitter.addWidget(self.content_splitter)
         self.main_splitter.addWidget(self.log_console)
         self.main_splitter.setStretchFactor(0, 1)
-        self.main_splitter.setSizes([720, 110])
+        self.main_splitter.setStretchFactor(1, 0)
+        self.main_splitter.setCollapsible(0, False)
+        self.main_splitter.setChildrenCollapsible(False)
+        self.main_splitter.setSizes([720, 150])
 
         root = QWidget()
         root.setObjectName("Root")
@@ -332,6 +335,8 @@ class MainWindow(ActionsMixin, NavigationMixin, HandlersMixin, CommandsMixin, QM
         self.content_splitter.setSizes([self._sidebar_width, 900, 360])
         if splitter:
             self.main_splitter.restoreState(splitter)
+        # A previously saved layout must never let the log dominate the window.
+        QTimer.singleShot(0, self._clamp_log_height)
         self.sidebar.setMinimumWidth(200)
         self.sidebar.setMaximumWidth(360)
         sidebar_visible = self.preferences.get_bool("window/sidebar_visible", True)
@@ -339,6 +344,13 @@ class MainWindow(ActionsMixin, NavigationMixin, HandlersMixin, CommandsMixin, QM
         self.sidebar_action.setChecked(sidebar_visible)
         last = self.preferences.last_selected_item
         QTimer.singleShot(0, lambda: self._select_key(last or "overview"))
+
+    def _clamp_log_height(self) -> None:
+        total = sum(self.main_splitter.sizes())
+        limit = max(120, min(260, int(total * 0.25))) if total else 200
+        sizes = self.main_splitter.sizes()
+        if len(sizes) == 2 and sizes[1] > limit:
+            self.main_splitter.setSizes([sizes[0] + sizes[1] - limit, limit])
 
     def _save_window_state(self) -> None:
         self.preferences.save_window_state(

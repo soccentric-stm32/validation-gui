@@ -55,7 +55,11 @@ echo "Add your user to the 'dialout' (Debian/Ubuntu) or 'uucp' group to use the 
 echo "  sudo usermod -aG dialout \$USER"
 POST
 chmod +x "$DEB/DEBIAN/postinst"
-dpkg-deb --build "$DEB" "$ROOT/dist/hwval-studio_${VERSION}_amd64.deb"
+if command -v dpkg-deb >/dev/null 2>&1; then
+  dpkg-deb --build "$DEB" "$ROOT/dist/hwval-studio_${VERSION}_amd64.deb"
+else
+  echo "dpkg-deb not found; .deb skipped (staging tree: $DEB). Install dpkg to build it." >&2
+fi
 
 # AppImage -------------------------------------------------------------
 APPDIR="$ROOT/build/HWVALStudio.AppDir"

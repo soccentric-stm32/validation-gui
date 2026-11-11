@@ -199,6 +199,15 @@ class CommandsMixin:
         self.log_action.setChecked(visible)
         self.preferences.show_log_on_start = visible
 
+    def _toggle_terminal(self, checked: bool | None = None) -> None:
+        if not hasattr(self, "terminal"):
+            return
+        visible = not self.terminal.isVisible()
+        if checked is not None:
+            visible = bool(checked)
+        self.terminal.setVisible(visible)
+        self.terminal_action.setChecked(visible)
+
     def _toggle_details(self, checked: bool) -> None:
         if hasattr(self, "tests_page"):
             self.tests_page.details_card.setVisible(checked)

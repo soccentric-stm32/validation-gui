@@ -43,6 +43,7 @@ from hwval_studio.ui.pages.overview import OverviewPage
 from hwval_studio.ui.pages.reports import ReportsPage
 from hwval_studio.ui.pages.tests import TestsPage
 from hwval_studio.ui.pages.update import UpdatePage
+from hwval_studio.ui.soc_terminal import TerminalPanel
 from hwval_studio.ui.theme import COLORS, apply_zoom, icon
 
 
@@ -198,8 +199,13 @@ class MainWindow(ActionsMixin, NavigationMixin, HandlersMixin, CommandsMixin, QM
         self.content_splitter = QSplitter(Qt.Orientation.Horizontal)
         self.content_splitter.addWidget(self.sidebar)
         self.content_splitter.addWidget(self.stack)
+        # Debug UART terminal on the right, as in the BOOT flasher.
+        self.terminal = TerminalPanel(title="Debug UART")
+        self.terminal.closed.connect(lambda: self._toggle_terminal(False))
+        self.content_splitter.addWidget(self.terminal)
         self.content_splitter.setStretchFactor(1, 1)
-        self.content_splitter.setSizes([self._sidebar_width, 800])
+        self.content_splitter.setCollapsible(1, False)
+        self.content_splitter.setSizes([self._sidebar_width, 800, 360])
 
         self.log_console = LogConsole()
         self.main_splitter = QSplitter(Qt.Orientation.Vertical)
@@ -232,6 +238,7 @@ class MainWindow(ActionsMixin, NavigationMixin, HandlersMixin, CommandsMixin, QM
         status.addPermanentWidget(self.status_port)
         status.addPermanentWidget(self.status_db)
         self.log_console.setVisible(self.preferences.show_log_on_start)
+        self.terminal.refresh_ports()
         self._rebuild_sidebar()
         self._wire_pages()
 
@@ -322,7 +329,7 @@ class MainWindow(ActionsMixin, NavigationMixin, HandlersMixin, CommandsMixin, QM
         if state:
             self.restoreState(state)
         self._sidebar_width = max(200, min(360, width))
-        self.content_splitter.setSizes([self._sidebar_width, 900])
+        self.content_splitter.setSizes([self._sidebar_width, 900, 360])
         if splitter:
             self.main_splitter.restoreState(splitter)
         self.sidebar.setMinimumWidth(200)

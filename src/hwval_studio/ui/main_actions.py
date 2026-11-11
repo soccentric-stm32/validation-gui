@@ -57,6 +57,8 @@ class ActionsMixin:
         self.sidebar_action.setChecked(True)
         self.log_action = self._action("Show Log", self._toggle_log, shortcut="Ctrl+Shift+L", icon_name="console", checkable=True)
         self.log_action.setChecked(bool(self.preferences.show_log_on_start))
+        self.terminal_action = self._action("Debug Terminal", self._toggle_terminal, shortcut="Ctrl+J", icon_name="console", checkable=True)
+        self.terminal_action.setChecked(True)
         self.details_action = self._action("Show Details Pane", self._toggle_details, checkable=True)
         self.details_action.setChecked(True)
         self.operator_action = self._action(
@@ -202,6 +204,7 @@ class ActionsMixin:
         view_menu = menubar.addMenu("&View")
         view_menu.addAction(self.sidebar_action)
         view_menu.addAction(self.log_action)
+        view_menu.addAction(self.terminal_action)
         view_menu.addAction(self.details_action)
         view_menu.addSeparator()
         view_menu.addAction(self.operator_action)

@@ -22,6 +22,7 @@ from PySide6.QtWidgets import (
 from hwval_studio.config import Preferences
 from hwval_studio.persistence.database import HistoryStore
 from hwval_studio.persistence.reports import export_run
+from hwval_studio.ui.charts import RunTrendChart, points_from_runs
 from hwval_studio.ui.dialogs.history_dialogs import CompareDialog, RunDetailDialog
 from hwval_studio.ui.pages.base import Page
 from hwval_studio.ui.theme import COLORS, icon
@@ -89,6 +90,9 @@ class HistoryPage(Page):
         self.test_filter_row.hide()
         self.body.addWidget(self.test_filter_row)
 
+        self.chart = RunTrendChart()
+        self.body.addWidget(self.chart)
+
         self.table = QTableWidget(0, 9)
         self.table.setHorizontalHeaderLabels(
             ["Date", "Board", "Firmware", "Selection", "PASS", "FAIL", "SKIP", "N/A", "Overall"]
@@ -146,6 +150,7 @@ class HistoryPage(Page):
         except Exception as exc:
             QMessageBox.critical(self, "History", str(exc))
             return
+        self.chart.set_points(points_from_runs(runs))
         self.table.setRowCount(len(runs))
         for row, run in enumerate(runs):
             selection = run.get("selection") or ""

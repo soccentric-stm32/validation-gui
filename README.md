@@ -2,6 +2,8 @@
 
 HWVAL Studio is a cross-platform PySide6 desktop application for macOS, Windows and Linux. It runs and records the HWVAL hardware validation tests over UART, keeps the run history in SQLite, updates application firmware through the A/B bootloader, flashes firmware over SWD with OpenOCD and controls the demo applications. A built-in device simulator implements all three HWLINK roles, so you can explore and develop the tool without any hardware. A headless CLI covers the same runs and updates for scripts and CI.
 
+[![HWVAL Studio: the test catalogue with live results](https://raw.githubusercontent.com/soccentric-stm32/soccentric-stm32.github.io/main/assets/shots/validation-gui.webp)](https://soccentric-stm32.github.io/#validation-app)
+
 ## Features
 
 - PySide6 app for macOS, Windows and Linux in the shared SoCcentric look (one design shared with the other SoCcentric desktop apps: Inter (system sans fallback), a 22/15/13/12/11 px type scale, accent `#007AFF` (`#0A84FF` in dark), 10 px cards with hairline borders, 32 px buttons, pill status labels and a solid-accent current item in the sidebar. Light and dark follow the system colour scheme. `src/hwval_studio/ui/soc_theme.py` is the shared theme file.)
